@@ -69,3 +69,23 @@ useEffect(() => {
       setStatus({ text: error.message, isError: true });
     }
   };
+
+   const handleEdit = async (id) => {
+    try {
+      const response = await fetch(`/inventory/${id}`);
+      if (!response.ok) throw new Error('Item not found');
+      const item = await response.json();
+      setEditingId(item.id);
+      setFormData({
+        product_name: item.product_name || '',
+        brands: item.brands || '',
+        barcode: item.barcode || '',
+        ingredients_text: item.ingredients_text || '',
+        price: item.price ?? '',
+        stock: item.stock ?? '',
+      });
+      setStatus({ text: `Editing item ${item.id}.`, isError: false });
+    } catch (error) {
+      setStatus({ text: error.message, isError: true });
+    }
+    };
