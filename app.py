@@ -20,3 +20,12 @@ def get_inventory_item(item_id):
         abort(404, description='Item not found')
     return jsonify(item)
 
+@app.route('/inventory', methods=['POST'])
+def create_inventory_item():
+    data = request.get_json(force=True)
+    if not isinstance(data, dict):
+        abort(400, description='JSON body required')
+    item = add_item(data)
+    return jsonify(item), 201
+
+
