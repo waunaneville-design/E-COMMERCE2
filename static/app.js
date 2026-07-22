@@ -39,3 +39,14 @@ useEffect(() => {
    const handleInputChange = ({ target }) => {
     setFormData((prev) => ({ ...prev, [target.name]: target.value }));
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const payload = {
+      product_name: formData.product_name.trim(),
+      brands: formData.brands.trim(),
+      barcode: formData.barcode.trim(),
+      ingredients_text: formData.ingredients_text.trim(),
+      price: Number(formData.price || 0),
+      stock: Number(formData.stock || 0),
+    };
