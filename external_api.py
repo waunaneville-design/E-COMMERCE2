@@ -17,3 +17,14 @@ def _normalize_of_product(of_product):
 def fetch_product(barcode=None, name=None, timeout=5):
     """Fetch product data from OpenFoodFacts by barcode or search by name.
 
+Returns normalized product dict or None on failure.
+    """
+    try:
+        if barcode:
+            url = f'https://world.openfoodfacts.org/api/v0/product/{barcode}.json'
+            resp = requests.get(url, timeout=timeout)
+            resp.raise_for_status()
+            data = resp.json()
+            if data.get('status') == 1 and data.get('product'):
+                return _normalize_of_product(data['product'])
+            return None
