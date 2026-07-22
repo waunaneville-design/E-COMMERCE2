@@ -57,3 +57,6 @@ def fetch_external():
         return jsonify({'status': 0, 'product': None}), 404
     return jsonify({'status': 1, 'product': product})
 
+if __name__ == '__main__':
+    app.run(debug=True)
+
