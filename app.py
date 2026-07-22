@@ -13,4 +13,10 @@ def list_inventory():
     """GET /inventory -> returns list of all items"""
     return jsonify(get_all_items())
 
+@app.route('/inventory/<int:item_id>', methods=['GET'])
+def get_inventory_item(item_id):
+    item = get_item(item_id)
+    if not item:
+        abort(404, description='Item not found')
+    return jsonify(item)
 
