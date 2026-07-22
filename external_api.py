@@ -28,3 +28,16 @@ Returns normalized product dict or None on failure.
             if data.get('status') == 1 and data.get('product'):
                 return _normalize_of_product(data['product'])
             return None
+
+        if name:
+            params = {'search_terms': name, 'search_simple': 1, 'json': 1, 'page_size': 1}
+            url = 'https://world.openfoodfacts.org/cgi/search.pl'
+            resp = requests.get(url, params=params, timeout=timeout)
+            resp.raise_for_status()
+            data = resp.json()
+            products = data.get('products') or []
+            if products:
+                return _normalize_of_product(products[0])
+            return None
+    except Exception:
+        return None
