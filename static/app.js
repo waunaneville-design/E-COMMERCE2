@@ -130,3 +130,122 @@ const handleFetch = async () => {
       setStatus({ text: error.message, isError: true });
     }
   };
+
+  return (
+    <div className="app-shell">
+      <header className="hero">
+        <div>
+          <p className="eyebrow">E-commerce Operations</p>
+          <h1>Inventory Administrator Portal</h1>
+          <p className="subtitle">Manage stock, update product details, and enrich records with live product data.</p>
+        </div>
+      </header>
+
+      <main className="grid">
+        <section className="card">
+          <div className="card-header">
+            <h2>Inventory Item Form</h2>
+            <p className="status" style={{ color: status.isError ? '#dc2626' : '#64748b' }}>{status.text}</p>
+          </div>
+          <form className="form-grid" onSubmit={handleSubmit}>
+            <input type="hidden" value={editingId || ''} />
+            <label>
+              Product Name
+              <input name="product_name" required placeholder="Enter product name" value={formData.product_name} onChange={handleInputChange} />
+            </label>
+            <label>
+              Brand
+              <input name="brands" placeholder="Brand name" value={formData.brands} onChange={handleInputChange} />
+            </label>
+            <label>
+              Barcode
+              <input name="barcode" placeholder="Barcode" value={formData.barcode} onChange={handleInputChange} />
+            </label>
+            <label>
+              Ingredients
+              <input name="ingredients_text" placeholder="Ingredients" value={formData.ingredients_text} onChange={handleInputChange} />
+            </label>
+            <label>
+              Price
+              <input name="price" type="number" step="0.01" min="0" placeholder="0.00" value={formData.price} onChange={handleInputChange} />
+            </label>
+            <label>
+              Stock
+              <input name="stock" type="number" min="0" placeholder="0" value={formData.stock} onChange={handleInputChange} />
+            </label>
+            <div className="form-actions">
+              <button type="submit" className="primary">Save Item</button>
+              <button type="button" className="secondary" onClick={resetForm}>Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section className="card">
+          <div className="card-header">
+            <h2>Fetch Product Details</h2>
+          </div>
+          <div className="form-grid compact">
+            <label>
+              Barcode
+              <input name="fetchBarcode" placeholder="Example: 1234567890123" value={fetchForm.barcode} onChange={(event) => setFetchForm((previous) => ({ ...previous, barcode: event.target.value }))} />
+            </label>
+            <label>
+              Product Name
+              <input name="fetchName" placeholder="Example: milk" value={fetchForm.name} onChange={(event) => setFetchForm((previous) => ({ ...previous, name: event.target.value }))} />
+            </label>
+            <div className="form-actions">
+              <button type="button" className="primary" onClick={handleFetch}>Fetch</button>
+            </div>
+          </div>
+          <pre className="result-box">{fetchResult}</pre>
+        </section>
+      </main>
+
+  <section className="card">
+        <div className="card-header">
+          <h2>Current Inventory</h2>
+        </div>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Barcode</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.length === 0 ? (
+                <tr>
+                  <td colSpan="7">No inventory items yet.</td>
+                </tr>
+              ) : (
+                items.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.product_name || 'Unnamed'}</td>
+                    <td>{item.brands || '-'}</td>
+                    <td>{item.barcode || '-'}</td>
+                    <td>${Number(item.price || 0).toFixed(2)}</td>
+                    <td>{item.stock ?? 0}</td>
+                    <td>
+                      <button className="secondary" type="button" onClick={() => handleEdit(item.id)}>Edit</button>
+                      <button className="danger" type="button" onClick={() => handleDelete(item.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
