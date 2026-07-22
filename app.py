@@ -8,4 +8,9 @@ app = Flask(__name__, static_folder='static', template_folder='static')
 def index():
     return render_template('index.html')
 
+@app.route('/inventory', methods=['GET'])
+def list_inventory():
+    """GET /inventory -> returns list of all items"""
+    return jsonify(get_all_items())
+
 
