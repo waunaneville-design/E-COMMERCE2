@@ -4,8 +4,9 @@
   "private": true,
   "description": "E-commerce inventory app",
   "scripts": {
-    "start": "python E_Commerce/app.py",
-    "test": "python -m pytest -q E_Commerce/tests"
+    "start": "py E_Commerce/app.py",
+    "dev": "py E_Commerce/app.py",
+    "test": "py -m pytest -q E_Commerce/tests"
   },
   "keywords": ["flask", "ecommerce"],
   "author": "",
