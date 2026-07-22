@@ -17,3 +17,13 @@ function App() {
   const [fetchForm, setFetchForm] = useState({ barcode: '', name: '' });
   const [fetchResult, setFetchResult] = useState('Use the form above to enrich inventory data with live product information.');
 
+const loadInventory = async () => {
+    try {
+      const response = await fetch('/inventory');
+      if (!response.ok) throw new Error('Unable to load inventory');
+      setItems(await response.json());
+    } catch (error) {
+      setStatus({ text: error.message, isError: true });
+    }
+  };
+
