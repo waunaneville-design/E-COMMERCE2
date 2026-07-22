@@ -27,3 +27,15 @@ const loadInventory = async () => {
     }
   };
 
+useEffect(() => {
+    loadInventory();
+  }, []);
+
+  const resetForm = () => {
+    setFormData(emptyForm);
+    setEditingId(null);
+  };
+
+   const handleInputChange = ({ target }) => {
+    setFormData((prev) => ({ ...prev, [target.name]: target.value }));
+  };
