@@ -39,4 +39,21 @@ def patch_inventory_item(item_id):
         abort(404, description='Item not found')
     return jsonify(item)
 
+@app.route('/inventory/<int:item_id>', methods=['DELETE'])
+def delete_inventory(item_id):
+    ok = delete_item(item_id)
+    if not ok:
+        abort(404, description='Item not found')
+    return jsonify({'deleted': item_id})
+
+@app.route('/inventory/fetch', methods=['GET'])
+def fetch_external():
+    barcode = request.args.get('barcode')
+    name = request.args.get('name')
+    if not barcode and not name:
+        abort(400, description='Provide barcode or name')
+    product = fetch_product(barcode=barcode, name=name)
+    if not product:
+        return jsonify({'status': 0, 'product': None}), 404
+    return jsonify({'status': 1, 'product': product})
 
