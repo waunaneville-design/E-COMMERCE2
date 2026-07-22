@@ -29,3 +29,14 @@ def create_inventory_item():
     return jsonify(item), 201
 
 
+@app.route('/inventory/<int:item_id>', methods=['PATCH'])
+def patch_inventory_item(item_id):
+    data = request.get_json(force=True)
+    if not isinstance(data, dict):
+        abort(400, description='JSON body required')
+    item = update_item(item_id, data)
+    if not item:
+        abort(404, description='Item not found')
+    return jsonify(item)
+
+
