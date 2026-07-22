@@ -101,3 +101,12 @@ useEffect(() => {
     }
   };
 
+const handleFetch = async () => {
+    const barcode = fetchForm.barcode.trim();
+    const name = fetchForm.name.trim();
+
+    try {
+      const params = new URLSearchParams();
+      if (barcode) params.append('barcode', barcode);
+      if (name) params.append('name', name);
+
