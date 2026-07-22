@@ -33,4 +33,15 @@ def list():
     for it in r.json():
         click.echo(f"{it['id']}: {it['product_name']} (${it['price']}) stock={it['stock']}")
 
+@cli.command()
+@click.option('--name', prompt=True)
+@click.option('--price', type=float, default=0.0)
+@click.option('--stock', type=int, default=0)
+def add(name, price, stock):
+    """Add a new inventory item."""
+    payload = {'product_name': name, 'price': price, 'stock': stock}
+    r = _request_with_error_handling('POST', f'{BASE}/inventory', json=payload)
+    r.raise_for_status()
+    click.echo('Added: ' + str(r.json()))
+
 
