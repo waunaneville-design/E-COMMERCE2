@@ -87,3 +87,26 @@ def delete(item_id):
     r.raise_for_status()
     click.echo('Deleted: ' + str(r.json()))
 
+@cli.command()
+@click.option('--barcode', default=None)
+@click.option('--name', default=None)
+def fetch(barcode, name):
+    """Find item on OpenFoodFacts via API server."""
+    params = {}
+    if barcode:
+        params['barcode'] = barcode
+    if name:
+        params['name'] = name
+    if not params:
+        click.echo('Provide --barcode or --name')
+        return
+    r = _request_with_error_handling('GET', f'{BASE}/inventory/fetch', params=params)
+    if r.status_code == 404:
+        click.echo('Not found')
+        return
+    r.raise_for_status()
+    click.echo(r.json())
+
+
+if __name__ == '__main__':
+    cli()
