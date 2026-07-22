@@ -44,4 +44,14 @@ def add(name, price, stock):
     r.raise_for_status()
     click.echo('Added: ' + str(r.json()))
 
+@cli.command()
+@click.argument('item_id', type=int)
+def view(item_id):
+    """View a single inventory item."""
+    r = _request_with_error_handling('GET', f'{BASE}/inventory/{item_id}')
+    if r.status_code == 404:
+        click.echo('Not found')
+        return
+    r.raise_for_status()
+    click.echo(r.json())
 
