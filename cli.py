@@ -20,3 +20,17 @@ def _request_with_error_handling(method, url, **kwargs):
     except requests.RequestException as exc:
         raise click.ClickException(f'API request failed: {exc}') from exc
 
+@click.group()
+def cli():
+    """Inventory management CLI."""
+    pass
+
+@cli.command()
+def list():
+    """List all inventory items."""
+    r = _request_with_error_handling('GET', f'{BASE}/inventory')
+    r.raise_for_status()
+    for it in r.json():
+        click.echo(f"{it['id']}: {it['product_name']} (${it['price']}) stock={it['stock']}")
+
+
