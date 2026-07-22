@@ -50,3 +50,9 @@ useEffect(() => {
       price: Number(formData.price || 0),
       stock: Number(formData.stock || 0),
     };
+
+    try {
+      const response = editingId
+        ? await fetch(`/inventory/${editingId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        : await fetch('/inventory', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
