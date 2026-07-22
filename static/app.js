@@ -89,3 +89,15 @@ useEffect(() => {
       setStatus({ text: error.message, isError: true });
     }
     };
+
+    const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/inventory/${id}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error('Unable to delete item');
+      setStatus({ text: 'Item deleted successfully.', isError: false });
+      await loadInventory();
+    } catch (error) {
+      setStatus({ text: error.message, isError: true });
+    }
+  };
+
