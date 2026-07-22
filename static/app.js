@@ -60,3 +60,12 @@ useEffect(() => {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Unable to save item');
       }
+
+      
+        setStatus({ text: editingId ? 'Item updated successfully.' : 'Item created successfully.', isError: false });
+      resetForm();
+      await loadInventory();
+    } catch (error) {
+      setStatus({ text: error.message, isError: true });
+    }
+  };
