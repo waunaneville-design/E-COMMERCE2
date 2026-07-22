@@ -110,3 +110,23 @@ const handleFetch = async () => {
       if (barcode) params.append('barcode', barcode);
       if (name) params.append('name', name);
 
+ const response = await fetch(`/inventory/fetch?${params.toString()}`);
+      if (!response.ok) throw new Error('No product found');
+      const data = await response.json();
+      setFetchResult(JSON.stringify(data, null, 2));
+
+       if (data.product) {
+        setFormData((prev) => ({
+          ...prev,
+          product_name: data.product.product_name || prev.product_name,
+          brands: data.product.brands || prev.brands,
+          barcode: data.product.barcode || prev.barcode,
+          ingredients_text: data.product.ingredients_text || prev.ingredients_text,
+        }));
+        setStatus({ text: 'Product details loaded.', isError: false });
+      }
+    } catch (error) {
+      setFetchResult(error.message);
+      setStatus({ text: error.message, isError: true });
+    }
+  };
