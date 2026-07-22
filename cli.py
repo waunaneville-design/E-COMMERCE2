@@ -55,3 +55,24 @@ def view(item_id):
     r.raise_for_status()
     click.echo(r.json())
 
+@cli.command()
+@click.argument('item_id', type=int)
+@click.option('--price', type=float)
+@click.option('--stock', type=int)
+def update(item_id, price, stock):
+    """Update an inventory item."""
+    payload = {}
+    if price is not None:
+        payload['price'] = price
+    if stock is not None:
+        payload['stock'] = stock
+    if not payload:
+        click.echo('Nothing to update')
+        return
+    r = _request_with_error_handling('PATCH', f'{BASE}/inventory/{item_id}', json=payload)
+    if r.status_code == 404:
+        click.echo('Not found')
+        return
+    r.raise_for_status()
+    click.echo('Updated: ' + str(r.json()))
+
