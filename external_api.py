@@ -13,3 +13,7 @@ def _normalize_of_product(of_product):
         'barcode': of_product.get('code') or of_product.get('barcode'),
         'ingredients_text': of_product.get('ingredients_text'),
     }
+
+def fetch_product(barcode=None, name=None, timeout=5):
+    """Fetch product data from OpenFoodFacts by barcode or search by name.
+
